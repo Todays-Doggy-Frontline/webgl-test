@@ -5,6 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | DCG Project</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <!-- ProtoDCG: iPhone のホーム画面から縦で開いて横にすると、表示範囲が上端の帯の分(62px)ずれたまま戻らず、
+         タップが絵とずれた。viewport を最初から置き(height=device-height を外す)、モバイルではページの
+         スクロールを止め、回転のたびにずれを 0 に戻す。viewport-fit=cover はカメラの切り欠きで左右が欠けるので付けない。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
@@ -90,12 +94,21 @@
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
 
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.documentElement.className = "unity-mobile-page";
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
+
+        // ProtoDCG: 回転・大きさの変化のあと、表示範囲のずれ(visualViewport.offsetTop 等)を 0 に戻す
+        var resetViewportOffset = function() {
+          if (window.scrollX || window.scrollY || (window.visualViewport && window.visualViewport.offsetTop))
+            window.scrollTo(0, 0);
+        };
+        var resetViewportOffsetSoon = function() {
+          [0, 100, 300, 600, 1000].forEach(function(d) { setTimeout(resetViewportOffset, d); });
+        };
+        window.addEventListener('orientationchange', resetViewportOffsetSoon);
+        window.addEventListener('resize', resetViewportOffsetSoon);
+        if (window.visualViewport) window.visualViewport.addEventListener('resize', resetViewportOffsetSoon);
 
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
