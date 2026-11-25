@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>DCG fix test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}#unity-canvas{display:block}</style>
+    <style>html,body{height:100%;overflow:hidden;overscroll-behavior:none;background:#000}#unity-canvas{display:block}#unity-container.unity-mobile{width:auto;height:auto;top:env(safe-area-inset-top);bottom:env(safe-area-inset-bottom);left:env(safe-area-inset-left);right:env(safe-area-inset-right)}</style>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
@@ -138,7 +138,7 @@
         function show(){
           var c=document.querySelector('#unity-canvas'), b=c.getBoundingClientRect(), vv=window.visualViewport, ps=getComputedStyle(probe);
           out.textContent=
-            'fix1 #'+(++n)+' standalone='+(navigator.standalone)+' dm='+matchMedia('(display-mode: standalone)').matches+'\n'+
+            'fix2 #'+(++n)+' standalone='+(navigator.standalone)+' dm='+matchMedia('(display-mode: standalone)').matches+'\n'+
             'inner '+innerWidth+'x'+innerHeight+' scrollY='+scrollY+' dpr='+devicePixelRatio+'\n'+
             'vv '+(vv?r(vv.width)+'x'+r(vv.height)+' offTop='+r(vv.offsetTop)+' pageTop='+r(vv.pageTop):'none')+'\n'+
             'screen '+screen.width+'x'+screen.height+' angle='+(screen.orientation?screen.orientation.angle:window.orientation)+'\n'+
